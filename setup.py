@@ -1,16 +1,11 @@
 #!/usr/bin/env python
-import io
 from setuptools import setup, find_packages
-
-with io.open('README.rst', encoding='utf8') as readme:
-    long_description = readme.read()
 
 
 setup(
     name='drawingapp',
     version='0.0.1',
     description='An app for drawing stuff',
-    long_description=long_description,
     author='Elias Dorneles',
     author_email='eliasdorneles@gmail.com',
     license='BSD license',
