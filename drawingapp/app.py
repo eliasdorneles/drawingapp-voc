@@ -106,10 +106,6 @@ class MainApp:
         vlayout.addView(drawingView)
 
         self._activity.setContentView(vlayout)
-
-    def changeColor(self, color):
-        print('changing color step 2')
-        self.drawingView.changeColor(color)
-
+        
 def main():
     MainApp()
