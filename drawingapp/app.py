@@ -91,16 +91,19 @@ class MainApp:
 
         red_color = Button(self._activity)
         red_color.setText('Red')
+        red_color.getBackground().setColorFilter(0xffff4444, PorterDuff.Mode.MULTIPLY)
         red_color.setOnClickListener(ButtonClick(drawingView.changeColor, 0xffff4444))
         hlayout.addView(red_color)
 
         orange_color = Button(self._activity)
         orange_color.setText('Orange')
+        orange_color.getBackground().setColorFilter(0xffffBB33, PorterDuff.Mode.MULTIPLY)
         orange_color.setOnClickListener(ButtonClick(drawingView.changeColor, 0xffffBB33))
         hlayout.addView(orange_color)
 
         green_color = Button(self._activity)
         green_color.setText('Green')
+        green_color.getBackground().setColorFilter(0xff55aa00, PorterDuff.Mode.MULTIPLY)
         green_color.setOnClickListener(ButtonClick(drawingView.changeColor, 0xff55aa00))
         hlayout.addView(green_color)
 
