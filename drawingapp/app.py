@@ -1,7 +1,7 @@
 import android
 from android.widget import LinearLayout, TextView, Button
 import android.content.Context
-from android.graphics import Bitmap, Canvas, Color, Paint, Path
+from android.graphics import Bitmap, Canvas, Color, Paint, Path, PorterDuff
 from android.view import MotionEvent, Gravity
 import android.view
 
@@ -21,6 +21,7 @@ class DrawingView(extends=android.view.View):
         self.brushSize = 20.0
         self.drawPath = Path()
         self.drawPaint = Paint()
+        self.porterDuff = PorterDuff()
         self.canvasPaint = None
         self.paintColor = 0xff55aa00
         self.canvasBitmap = None
@@ -68,6 +69,11 @@ class DrawingView(extends=android.view.View):
         self.paintColor = color
         self.drawPaint.setColor(self.paintColor)
 
+    def reset(self) -> void:
+        print('reseting')
+        self.drawCanvas.drawColor(0, self.porterDuff.Mode.CLEAR)
+        self.invalidate()
+
 class MainApp:
     def __init__(self):
         self._activity = android.PythonActivity.setListener(self)
@@ -98,6 +104,11 @@ class MainApp:
         green_color.setOnClickListener(ButtonClick(drawingView.changeColor, 0xff55aa00))
         hlayout.addView(green_color)
 
+        reset_button = Button(self._activity)
+        reset_button.setText('Reset')
+        reset_button.setOnClickListener(ButtonClick(drawingView.reset))
+        hlayout.addView(reset_button)
+
         vlayout = LinearLayout(self._activity)
         vlayout.setOrientation(LinearLayout.VERTICAL)
 
@@ -106,6 +117,6 @@ class MainApp:
         vlayout.addView(drawingView)
 
         self._activity.setContentView(vlayout)
-        
+
 def main():
     MainApp()
