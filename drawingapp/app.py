@@ -1,9 +1,18 @@
 import android
-from android.widget import LinearLayout, TextView
+from android.widget import LinearLayout, TextView, Button
 import android.content.Context
 from android.graphics import Bitmap, Canvas, Color, Paint, Path
-from android.view import MotionEvent
+from android.view import MotionEvent, Gravity
+import android.view
 
+class ButtonClick(implements=android.view.View[OnClickListener]):
+    def __init__(self, callback, *args, **kwargs):
+        self.callback = callback
+        self.args = args
+        self.kwargs = kwargs
+
+    def onClick(self, view: android.view.View) -> void:
+        self.callback(*self.args, **self.kwargs)
 
 class DrawingView(extends=android.view.View):
     @super({context: android.content.Context})
@@ -54,6 +63,10 @@ class DrawingView(extends=android.view.View):
         self.invalidate()
         return True
 
+    def changeColor(self, color: int) -> void:
+        print('changing color final step')
+        self.paintColor = color
+        self.drawPaint.setColor(self.paintColor)
 
 class MainApp:
     def __init__(self):
@@ -64,15 +77,35 @@ class MainApp:
         label.setTextSize(30)
         label.setText('Draw something!')
 
-        vlayout = LinearLayout(self._activity)
-        vlayout.setOrientation(LinearLayout.VERTICAL)
-        vlayout.addView(label)
+        hlayout = LinearLayout(self._activity)
+        hlayout.setOrientation(LinearLayout.HORIZONTAL)
+        hlayout.setGravity(Gravity.CENTER)
 
         drawingView = DrawingView(self._activity)
+
+        red_color = Button(self._activity)
+        red_color.setText('Red')
+        red_color.setOnClickListener(ButtonClick(drawingView.changeColor, 0xffff4444))
+        hlayout.addView(red_color)
+
+        orange_color = Button(self._activity)
+        orange_color.setText('Orange')
+        orange_color.setOnClickListener(ButtonClick(drawingView.changeColor, 0xffffBB33))
+        hlayout.addView(orange_color)
+
+        green_color = Button(self._activity)
+        green_color.setText('Green')
+        green_color.setOnClickListener(ButtonClick(drawingView.changeColor, 0xff55aa00))
+        hlayout.addView(green_color)
+
+        vlayout = LinearLayout(self._activity)
+        vlayout.setOrientation(LinearLayout.VERTICAL)
+
+        vlayout.addView(label)
+        vlayout.addView(hlayout)
         vlayout.addView(drawingView)
 
         self._activity.setContentView(vlayout)
-
-
+        
 def main():
     MainApp()
