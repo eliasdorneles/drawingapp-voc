@@ -69,6 +69,10 @@ class DrawingView(extends=android.view.View):
         self.paintColor = color
         self.drawPaint.setColor(self.paintColor)
 
+    def change_brushsize(self, size: int) -> void:
+        self.brushSize = size
+        self.drawPaint.setStrokeWidth(self.brushSize)
+
     def reset(self) -> void:
         print('reseting')
         self.drawCanvas.drawColor(0, self.porterDuff.Mode.CLEAR)
@@ -79,44 +83,67 @@ class MainApp:
         self._activity = android.PythonActivity.setListener(self)
 
     def onCreate(self):
-        label = TextView(self._activity)
-        label.setTextSize(30)
-        label.setText('Draw something!')
+        drawingView = DrawingView(self._activity)
 
         hlayout = LinearLayout(self._activity)
         hlayout.setOrientation(LinearLayout.HORIZONTAL)
         hlayout.setGravity(Gravity.CENTER)
 
-        drawingView = DrawingView(self._activity)
+        small_brush = Button(self._activity)
+        small_brush.setText('Small')
+        small_brush.setOnClickListener(ButtonClick(drawingView.change_brushsize, 5.0))
+        hlayout.addView(small_brush)
 
-        red_color = Button(self._activity)
-        red_color.setText('Red')
-        red_color.getBackground().setColorFilter(0xffff4444, PorterDuff.Mode.MULTIPLY)
-        red_color.setOnClickListener(ButtonClick(drawingView.changeColor, 0xffff4444))
-        hlayout.addView(red_color)
+        medium_brush = Button(self._activity)
+        medium_brush.setText('Medium')
+        medium_brush.setOnClickListener(ButtonClick(drawingView.change_brushsize, 10.0))
+        hlayout.addView(medium_brush)
 
-        orange_color = Button(self._activity)
-        orange_color.setText('Orange')
-        orange_color.getBackground().setColorFilter(0xffffBB33, PorterDuff.Mode.MULTIPLY)
-        orange_color.setOnClickListener(ButtonClick(drawingView.changeColor, 0xffffBB33))
-        hlayout.addView(orange_color)
-
-        green_color = Button(self._activity)
-        green_color.setText('Green')
-        green_color.getBackground().setColorFilter(0xff55aa00, PorterDuff.Mode.MULTIPLY)
-        green_color.setOnClickListener(ButtonClick(drawingView.changeColor, 0xff55aa00))
-        hlayout.addView(green_color)
+        large_brush = Button(self._activity)
+        large_brush.setText('Large')
+        large_brush.setOnClickListener(ButtonClick(drawingView.change_brushsize, 20.0))
+        hlayout.addView(large_brush)
 
         reset_button = Button(self._activity)
         reset_button.setText('Reset')
         reset_button.setOnClickListener(ButtonClick(drawingView.reset))
         hlayout.addView(reset_button)
 
+        # colors
+
+        hlayout1 = LinearLayout(self._activity)
+        hlayout1.setOrientation(LinearLayout.HORIZONTAL)
+        hlayout1.setGravity(Gravity.CENTER)
+
+        red_color = Button(self._activity)
+        red_color.setText('Red')
+        red_color.getBackground().setColorFilter(0xffff4444, PorterDuff.Mode.MULTIPLY)
+        red_color.setOnClickListener(ButtonClick(drawingView.changeColor, 0xffff4444))
+        hlayout1.addView(red_color)
+
+        orange_color = Button(self._activity)
+        orange_color.setText('Orange')
+        orange_color.getBackground().setColorFilter(0xffffBB33, PorterDuff.Mode.MULTIPLY)
+        orange_color.setOnClickListener(ButtonClick(drawingView.changeColor, 0xffffBB33))
+        hlayout1.addView(orange_color)
+
+        green_color = Button(self._activity)
+        green_color.setText('Green')
+        green_color.getBackground().setColorFilter(0xff55aa00, PorterDuff.Mode.MULTIPLY)
+        green_color.setOnClickListener(ButtonClick(drawingView.changeColor, 0xff55aa00))
+        hlayout1.addView(green_color)
+
+        blue_color = Button(self._activity)
+        blue_color.setText('Blue')
+        blue_color.getBackground().setColorFilter(0xff33b5e5, PorterDuff.Mode.MULTIPLY)
+        blue_color.setOnClickListener(ButtonClick(drawingView.changeColor, 0xff33b5e5))
+        hlayout1.addView(blue_color)
+
         vlayout = LinearLayout(self._activity)
         vlayout.setOrientation(LinearLayout.VERTICAL)
 
-        vlayout.addView(label)
         vlayout.addView(hlayout)
+        vlayout.addView(hlayout1)
         vlayout.addView(drawingView)
 
         self._activity.setContentView(vlayout)
